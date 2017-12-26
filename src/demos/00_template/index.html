@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TO DO LIST</title>
+    <script src="../../js/react.js"></script>
+    <script src="../../js/react-dom.js"></script>
+    <script src="../../js/browser.min.js"></script>
+</head>
+
+
+
+<body>
+<style>
+    body {
+
+        background-color: #C9705D;
+
+    }
+    #container {
+        display: flex;
+        justify-content: center;
+    }
+    .todoListMain .header input {
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #FFF;
+        width: 165px;
+    }
+    .todoListMain .header button {
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+        margin-right: 0px;
+        background-color: #0066FF;
+        color: #FFF;
+        border: 2px solid #0066FF;
+    }
+    .todoListMain .header button:hover {
+        background-color: #003399;
+        border: 2px solid #003399;
+        cursor: pointer;
+    }
+    .todoListMain .theList {
+        list-style: none;
+        padding-left: 0;
+        width: 250px;
+    }
+    .todoListMain .theList li {
+        color: #333;
+        background-color: rgba(255,255,255,.5);
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+    }
+</style>
+
+    <div id ="container">
+
+    </div>
+
+
+
+</body>
+<script type = "text/babel">
+    /*Class for itemDisplay*/
+    class TodoItems extends React.Component {
+        constructor(props) {
+            super(props);
+
+            this.createTasks = this.createTasks.bind(this);
+        }
+
+        createTasks(item) {
+            return <li key={item.key}>{item.text}</li>
+        }
+
+        render() {
+            var todoEntries = this.props.entries;
+            var listItems = todoEntries.map(this.createTasks);
+
+            return (
+                <ul className="theList">
+                    {listItems}
+                </ul>
+            );
+        }
+    };
+
+    /*Class for itemDisplay ends*/
+/*Class for maintodolist*/
+class Todolist extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            items : []
+        };
+
+        this.addItem = this.addItem.bind(this);
+    }
+    addItem(e) {
+        var itemArray = this.state.items;
+
+        if (this._inputElement.value !== "") {
+            itemArray.unshift({
+                text: this._inputElement.value,
+                key: Date.now()
+            });
+
+            this.setState({
+                items: itemArray
+            });
+
+            this._inputElement.value = "";
+        }
+
+        console.log(itemArray);
+
+        e.preventDefault();
+    }
+
+    render(){
+        return(
+          <div>
+              <div className="toDoListMain">
+                  <div className = "header">
+                      <form onSubmit= {this.addItem}>
+                          <input ref = {(a)=> this._inputElement = a} type = "text" placeholder="enter task information"/>
+                          <button type = "submit">ADD</button>
+                      </form>
+                </div>
+               /*   <TodoItems entries = {this.state.items}/>*/
+
+              </div>
+          </div>
+        );
+    }
+}
+/*Class for maintodolist ends*/
+
+
+
+
+ReactDOM.render(
+    <Todolist />,
+    document.getElementById("container")
+);
+</script>
+</html>
